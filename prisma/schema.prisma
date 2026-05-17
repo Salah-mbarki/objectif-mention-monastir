@@ -1,0 +1,67 @@
+// Objectif Mention Monastir - Prisma schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// A scientific or school exercise document uploaded by the admin.
+/// kind = "DIGITAL" (pdf/word, unlimited copies) or "PAPER" (limited stock).
+model Document {
+  id            String   @id @default(cuid())
+  title         String
+  description   String?
+  subject       String   // "PHYSIQUE" | "CHIMIE"
+  level         String   // "PREMIERE" | "DEUXIEME" | "TROISIEME" | "BACCALAUREAT"
+  section       String?
+  kind          String   // "DIGITAL" | "PAPER"
+  price         Float    @default(0)
+  filePath      String?
+  fileName      String?
+  fileMimeType  String?
+  imagePath     String?
+  stock         Int?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  orders        OrderItem[]
+
+  @@index([subject])
+  @@index([level])
+  @@index([kind])
+}
+
+/// Order placed by a (non-authenticated) customer.
+model Order {
+  id          String      @id @default(cuid())
+  fullName    String
+  phone       String
+  email       String?
+  city        String
+  address     String
+  notes       String?
+  status      String      @default("PENDING")
+  totalPrice  Float       @default(0)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  items       OrderItem[]
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+model OrderItem {
+  id          String   @id @default(cuid())
+  orderId     String
+  documentId  String
+  quantity    Int      @default(1)
+  unitPrice   Float    @default(0)
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  document    Document @relation(fields: [documentId], references: [id])
+
+  @@index([orderId])
+  @@index([documentId])
+}

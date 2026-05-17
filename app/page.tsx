@@ -1,65 +1,133 @@
-import Image from "next/image";
+import Link from "next/link";
+import { prisma } from "@/lib/prisma";
+import DocumentCard from "@/components/document-card";
+import { SUBJECTS, LEVELS } from "@/lib/constants";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  const latest = await prisma.document.findMany({
+    orderBy: { createdAt: "desc" },
+    take: 6,
+  });
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div>
+      <section className="bg-gradient-to-br from-[var(--primary-light)] to-white border-b border-[var(--border)]">
+        <div className="max-w-6xl mx-auto px-4 py-14 grid md:grid-cols-2 gap-8 items-center">
+          <div>
+            <span className="badge mb-4">Monastir &amp; environs</span>
+            <h1 className="text-4xl sm:text-5xl font-extrabold text-[var(--primary-dark)] leading-tight">
+              Réussissez votre <span className="text-[var(--primary)]">mention</span>{" "}
+              en Physique &amp; Chimie
+            </h1>
+            <p className="mt-4 text-[var(--muted)] text-lg">
+              Une bibliothèque d&apos;exercices et de documents pédagogiques pour les
+              élèves du secondaire tunisien — de la 1ère année au Baccalauréat.
+              Livraison à domicile, paiement à la réception.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link href="/documents" className="btn-primary">
+                Parcourir les documents
+              </Link>
+              <Link href="/commander" className="btn-outline">
+                Commander maintenant
+              </Link>
+            </div>
+            <div className="mt-6 flex flex-wrap gap-4 text-sm text-[var(--muted)]">
+              <span>✓ Pas de compte requis</span>
+              <span>✓ Paiement à la livraison</span>
+              <span>✓ PDF, Word ou papier</span>
+            </div>
+          </div>
+          <div className="card p-6 bg-white">
+            <h2 className="font-bold text-[var(--primary-dark)] mb-3">
+              Filtrez en un clic
+            </h2>
+            <div className="grid grid-cols-2 gap-2">
+              {SUBJECTS.map((s) => (
+                <Link
+                  key={s.value}
+                  href={`/documents?subject=${s.value}`}
+                  className="border border-[var(--border)] rounded-lg p-3 hover:border-[var(--primary)] hover:bg-[var(--primary-light)] transition"
+                >
+                  <div className="font-semibold text-[var(--primary-dark)]">
+                    {s.label}
+                  </div>
+                  <div className="text-xs text-[var(--muted)]">Voir tous</div>
+                </Link>
+              ))}
+              {LEVELS.map((l) => (
+                <Link
+                  key={l.value}
+                  href={`/documents?level=${l.value}`}
+                  className="border border-[var(--border)] rounded-lg p-3 hover:border-[var(--primary)] hover:bg-[var(--primary-light)] transition"
+                >
+                  <div className="font-semibold text-[var(--primary-dark)]">
+                    {l.label}
+                  </div>
+                  <div className="text-xs text-[var(--muted)]">Voir tous</div>
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      <section className="max-w-6xl mx-auto px-4 py-12">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="section-title">Nouveautés</h2>
+          <Link href="/documents" className="link-purple text-sm font-medium">
+            Voir tout →
+          </Link>
         </div>
-      </main>
+        {latest.length === 0 ? (
+          <div className="card p-8 text-center text-[var(--muted)]">
+            Aucun document publié pour le moment.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {latest.map((doc) => (
+              <DocumentCard key={doc.id} doc={doc} />
+            ))}
+          </div>
+        )}
+      </section>
+
+      <section className="bg-[var(--primary-light)]">
+        <div className="max-w-6xl mx-auto px-4 py-12">
+          <h2 className="section-title mb-6">Comment ça marche ?</h2>
+          <div className="grid sm:grid-cols-3 gap-4">
+            {[
+              {
+                n: 1,
+                t: "Choisissez vos documents",
+                d: "Filtrez par matière, niveau ou section et ajoutez à votre panier.",
+              },
+              {
+                n: 2,
+                t: "Remplissez le formulaire",
+                d: "Nom, téléphone et adresse à Monastir ou ses environs.",
+              },
+              {
+                n: 3,
+                t: "Payez à la livraison",
+                d: "Notre livreur passe chez vous, vous payez en main propre.",
+              },
+            ].map((s) => (
+              <div key={s.n} className="card p-5">
+                <div className="w-9 h-9 rounded-full bg-[var(--primary)] text-white flex items-center justify-center font-bold mb-3">
+                  {s.n}
+                </div>
+                <div className="font-semibold text-[var(--primary-dark)]">
+                  {s.t}
+                </div>
+                <p className="text-sm text-[var(--muted)] mt-1">{s.d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
