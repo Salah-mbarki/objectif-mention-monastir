@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --color-brand-blue: #1b4e9b;
+  --color-brand-blue-dark: #123a75;
+  --color-brand-blue-light: #eaf1fb;
+  --color-brand-orange: #f26b21;
+  --color-brand-orange-dark: #d95c15;
+  --color-brand-green: #4caf50;
+  --color-brand-gray: #4a4a4a;
+  --color-brand-footer: #0f2d5c;
+
+  --shadow-card: 0 2px 10px rgba(15, 45, 92, 0.06);
+  --shadow-card-hover: 0 12px 28px rgba(15, 45, 92, 0.14);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--color-brand-gray);
+  background-color: #ffffff;
+}
+
+/* Visible focus states for keyboard navigation */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-brand-blue);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
