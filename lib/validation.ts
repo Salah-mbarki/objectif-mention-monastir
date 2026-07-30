@@ -1,6 +1,5 @@
 import { z } from "zod";
 import {
-  DELIVERY_CITIES,
   DOC_KINDS,
   LEVELS,
   SECTIONS,
@@ -11,7 +10,6 @@ const subjectEnum = z.enum(SUBJECTS.map((s) => s.value) as [string, ...string[]]
 const levelEnum = z.enum(LEVELS.map((l) => l.value) as [string, ...string[]]);
 const sectionEnum = z.enum(SECTIONS.map((s) => s.value) as [string, ...string[]]);
 const kindEnum = z.enum(DOC_KINDS.map((k) => k.value) as [string, ...string[]]);
-const cityEnum = z.enum(DELIVERY_CITIES as unknown as [string, ...string[]]);
 
 export const documentSchema = z
   .object({
@@ -57,7 +55,7 @@ export const orderSchema = z.object({
     .max(160)
     .optional()
     .or(z.literal("")),
-  city: cityEnum,
+  city: z.literal("Monastir"),
   address: z.string().trim().min(5, "Adresse trop courte").max(300),
   notes: z.string().trim().max(500).optional().or(z.literal("")),
   items: z.array(orderItemSchema).min(1, "Aucun document sélectionné"),

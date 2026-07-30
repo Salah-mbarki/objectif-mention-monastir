@@ -16,7 +16,7 @@ export default async function HomePage() {
       <section className="bg-gradient-to-br from-[var(--primary-light)] to-white border-b border-[var(--border)]">
         <div className="max-w-6xl mx-auto px-4 py-14 grid md:grid-cols-2 gap-8 items-center">
           <div>
-            <span className="badge mb-4">Monastir &amp; environs</span>
+            <span className="badge mb-4">Uniquement à Monastir centre</span>
             <h1 className="text-4xl sm:text-5xl font-extrabold text-[var(--primary-dark)] leading-tight">
               Réussissez votre <span className="text-[var(--primary)]">mention</span>{" "}
               en Physique &amp; Chimie
@@ -116,13 +116,13 @@ export default async function HomePage() {
               },
             ].map((s) => (
               <div key={s.n} className="card p-5">
-                <div className="w-9 h-9 rounded-full bg-[var(--primary)] text-white flex items-center justify-center font-bold mb-3">
+                <div className="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center font-bold mb-3">
                   {s.n}
                 </div>
-                <div className="font-semibold text-[var(--primary-dark)]">
+                <div className="font-semibold text-primary-dark">
                   {s.t}
                 </div>
-                <p className="text-sm text-[var(--muted)] mt-1">{s.d}</p>
+                <p className="text-sm text-muted mt-1">{s.d}</p>
               </div>
             ))}
           </div>

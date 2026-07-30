@@ -3,7 +3,6 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useCart } from "@/components/cart-context";
-import { DELIVERY_CITIES } from "@/lib/constants";
 import { placeOrder, type PlaceOrderResult } from "./actions";
 
 export default function CommanderClient() {
@@ -52,7 +51,6 @@ export default function CommanderClient() {
       fullName: String(fd.get("fullName") ?? ""),
       phone: String(fd.get("phone") ?? ""),
       email: String(fd.get("email") ?? ""),
-      city: String(fd.get("city") ?? ""),
       address: String(fd.get("address") ?? ""),
       notes: String(fd.get("notes") ?? ""),
       items: items.map((i) => ({
@@ -119,36 +117,20 @@ export default function CommanderClient() {
           Adresse de livraison
         </h2>
         <p className="text-xs text-[var(--muted)] -mt-2">
-          Livraison uniquement dans le gouvernorat de Monastir et ses environs.
+          Livraison uniquement à Monastir.
         </p>
 
-        <div className="grid sm:grid-cols-2 gap-3">
-          <div>
-            <label className="label">Ville / Délégation *</label>
-            <select name="city" required className="select" defaultValue="">
-              <option value="" disabled>
-                — Choisir —
-              </option>
-              {DELIVERY_CITIES.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
-            {errors.city && <div className="field-error">{errors.city}</div>}
-          </div>
-          <div>
-            <label className="label">Adresse détaillée *</label>
-            <input
-              name="address"
-              required
-              className="input"
-              placeholder="Rue, immeuble, repère…"
-            />
-            {errors.address && (
-              <div className="field-error">{errors.address}</div>
-            )}
-          </div>
+        <div>
+          <label className="label">Adresse détaillée *</label>
+          <input
+            name="address"
+            required
+            className="input"
+            placeholder="Rue, immeuble, repère…"
+          />
+          {errors.address && (
+            <div className="field-error">{errors.address}</div>
+          )}
         </div>
 
         <div>

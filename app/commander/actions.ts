@@ -13,14 +13,13 @@ type RawInput = {
   fullName: string;
   phone: string;
   email?: string;
-  city: string;
   address: string;
   notes?: string;
   items: RawItem[];
 };
 
 export async function placeOrder(input: RawInput): Promise<PlaceOrderResult> {
-  const parsed = orderSchema.safeParse(input);
+  const parsed = orderSchema.safeParse({ ...input, city: "Monastir" });
   if (!parsed.success) {
     const fieldErrors: Record<string, string> = {};
     for (const issue of parsed.error.issues) {

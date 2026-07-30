@@ -66,7 +66,7 @@ export default function RootLayout({
                 © {new Date().getFullYear()} Objectif Mention Monastir — Tous droits réservés.
               </div>
               <div className="flex items-center gap-3">
-                <span>Paiement à la livraison • Monastir & environs</span>
+                <span>Paiement à la livraison • Monastir centre</span>
                 <Link href="/admin" className="opacity-60 hover:opacity-100">
                   Espace admin
                 </Link>
